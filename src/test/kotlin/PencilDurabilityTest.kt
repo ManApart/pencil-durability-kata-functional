@@ -23,6 +23,12 @@ class PencilDurabilityTest {
     }
 
     @Test
+    fun pointDegradationDoesNotCountWhitespace() {
+        val actual = Writer(pointDurability = 11).write("apple cider\n and")
+        assertEquals("apple cider\n a", actual.paper)
+    }
+
+    @Test
     fun appendText() {
         val actual = "apple".write(" tree")
         assertEquals("apple tree", actual.paper)

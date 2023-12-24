@@ -1,11 +1,20 @@
 import kotlin.math.min
 
-data class Writer(val paper: String = "", val pointDurability: Int = 100, val eraserDurability: Int = 100)
+data class Writer(
+    val paper: String = "",
+    val pointDurability: Int = 100,
+    val eraserDurability: Int = 100
+)
 
 fun String.write(text: String) = Writer(this).write(text)
-fun Writer.write(textToWrite: String) : Writer {
-    val amountToWrite = min(textToWrite.length, pointDurability)
-    val text = textToWrite.take(amountToWrite)
+fun Writer.write(textToWrite: String): Writer {
+    var durabilityLeft = pointDurability
+    val text = textToWrite.mapNotNull { c ->
+        if (durabilityLeft > 0) {
+            if (!c.isWhitespace()) durabilityLeft--
+            c
+        } else null
+    }.joinToString("")
     return copy(paper = paper + text)
 }
 
