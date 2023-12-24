@@ -1,2 +1,2 @@
 
-fun String.write(text: String) = "a"
+fun String.write(text: String) = text
