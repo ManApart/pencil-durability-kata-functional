@@ -9,15 +9,20 @@ data class Writer(
 fun String.write(text: String) = Writer(this).write(text)
 fun Writer.write(textToWrite: String) = edit(paper.length, textToWrite)
 
-fun String.erase(textToErase: String) = Writer(this).erase(textToErase)
-fun Writer.erase(textToErase: String): Writer {
-    val durabilityUsed = min(eraserDurability, textToErase.length)
-    val text = textToErase.takeLast(durabilityUsed)
+fun String.erase(text: String) = Writer(this).erase(text)
+fun Writer.erase(text: String): Writer {
     val start = paper.lastIndexOf(text)
-    val replacement = text.indices.joinToString("") { " " }
+
+    var durabilityLeft = eraserDurability
+    val replacement = text.reversed().mapNotNull { c ->
+        if (durabilityLeft > 0) {
+            if (!c.isWhitespace()) durabilityLeft--
+            ' '
+        } else c
+    }.reversed().joinToString("")
 
     val newPaper = paper.edit(start, text, replacement)
-    return copy(paper = newPaper, eraserDurability = eraserDurability - durabilityUsed)
+    return copy(paper = newPaper, eraserDurability = durabilityLeft)
 }
 
 fun String.edit(start: Int, text: String) = Writer(this).edit(start, text)

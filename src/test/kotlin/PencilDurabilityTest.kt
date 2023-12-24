@@ -67,6 +67,12 @@ class PencilDurabilityTest {
     }
 
     @Test
+    fun eraseDurabilityDoesNotCountWhiteSpace() {
+        val actual = Writer("Buffalo Bill", eraserDurability = 5).erase("Buffalo Bill")
+        assertEquals("Buffal      ", actual.paper)
+    }
+
+    @Test
     fun incrementalEraseDurability() {
         val actual = Writer("Buffalo Bill", eraserDurability = 3)
             .erase("Bill")
