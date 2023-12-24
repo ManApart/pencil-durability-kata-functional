@@ -24,7 +24,9 @@ fun Writer.erase(textToErase: String): Writer {
 fun String.edit(start: Int, text: String, ignoreConflicts: Boolean = false) =
     Writer(this).edit(start, text, ignoreConflicts)
 
-fun Writer.edit(start: Int, text: String, ignoreConflicts: Boolean = false): Writer {
+fun Writer.edit(start: Int, textToWrite: String, ignoreConflicts: Boolean = false): Writer {
+    val amountToWrite = min(textToWrite.length, pointDurability)
+    val text = textToWrite.take(amountToWrite)
     val replacement = if (ignoreConflicts) text else {
         text.mapIndexed { i, c ->
             val replacedChar = paper[start + i]
