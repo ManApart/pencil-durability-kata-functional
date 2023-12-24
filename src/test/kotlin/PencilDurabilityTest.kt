@@ -39,4 +39,10 @@ class PencilDurabilityTest {
         val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?".erase("chuck")
         assertEquals("How much wood would a woodchuck chuck if a woodchuck could       wood?", actual)
     }
+
+    @Test
+    fun editEmptySpace(){
+        val actual = "An       a day keeps the doctor away".edit(3, "onion")
+        assertEquals("An onion a day keeps the doctor away", actual)
+    }
 }
