@@ -29,6 +29,14 @@ class PencilDurabilityTest {
     }
 
     @Test
+    fun incrementalDegradation() {
+        val actual = Writer(pointDurability = 7)
+            .write("apple")
+            .write("sauce")
+        assertEquals("applesa", actual.paper)
+    }
+
+    @Test
     fun appendText() {
         val actual = "apple".write(" tree")
         assertEquals("apple tree", actual.paper)

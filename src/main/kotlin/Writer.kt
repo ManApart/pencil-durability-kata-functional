@@ -15,7 +15,7 @@ fun Writer.write(textToWrite: String): Writer {
             c
         } else null
     }.joinToString("")
-    return copy(paper = paper + text)
+    return copy(paper = paper + text, pointDurability = durabilityLeft)
 }
 
 fun String.erase(textToErase: String) = Writer(this).erase(textToErase)
