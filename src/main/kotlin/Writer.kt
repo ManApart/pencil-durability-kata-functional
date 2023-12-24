@@ -1,2 +1,2 @@
 
-fun String.write(text: String) = text
+fun String.write(text: String) = this + text
