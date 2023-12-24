@@ -4,6 +4,7 @@ data class Writer(
     val paper: String = "",
     val pointDurability: Int = 100,
     val initialPointDurability: Int = pointDurability,
+    val length: Int = 2,
     val eraserDurability: Int = 100
 )
 
@@ -46,7 +47,11 @@ fun Writer.edit(start: Int, textToWrite: String): Writer {
     return copy(paper = newPaper, pointDurability = durabilityLeft)
 }
 
-fun Writer.sharpen() = copy(pointDurability = initialPointDurability)
+fun Writer.sharpen(): Writer {
+    return if (length > 0) {
+        copy(length = length - 1, pointDurability = initialPointDurability)
+    } else this
+}
 
 private fun String.edit(start: Int, text: String, replacement: String): String {
     val startText = substring(0, min(start, length))
