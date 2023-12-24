@@ -21,4 +21,10 @@ class PencilDurabilityTest {
         val actual = "apple".write(" tree")
         assertEquals("apple tree", actual)
     }
+
+    @Test
+    fun eraseText(){
+        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck trees?".erase("trees")
+        assertEquals("How much wood would a woodchuck chuck if a woodchuck could chuck      ?", actual)
+    }
 }
