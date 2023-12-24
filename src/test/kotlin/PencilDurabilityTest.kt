@@ -5,7 +5,8 @@ import kotlin.test.assertEquals
 class PencilDurabilityTest {
 
     @Test
-    fun helloWorld(){
-        assertEquals("Hello", "Hello")
+    fun writeText(){
+        val actual = "".write("a")
+        assertEquals("a", actual)
     }
 }
