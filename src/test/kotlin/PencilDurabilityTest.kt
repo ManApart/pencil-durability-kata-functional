@@ -24,46 +24,46 @@ class PencilDurabilityTest {
 
     @Test
     fun eraseText() {
-        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck trees?".erase(Pencil(), "trees")
-        assertEquals("How much wood would a woodchuck chuck if a woodchuck could chuck      ?", actual)
+        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck trees?".erase("trees")
+        assertEquals("How much wood would a woodchuck chuck if a woodchuck could chuck      ?", actual.paper)
     }
 
     @Test
     fun eraseTextOfDifferentLength() {
-        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck trees?".erase(Pencil(), "tree")
-        assertEquals("How much wood would a woodchuck chuck if a woodchuck could chuck     s?", actual)
+        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck trees?".erase("tree")
+        assertEquals("How much wood would a woodchuck chuck if a woodchuck could chuck     s?", actual.paper)
     }
 
     @Test
     fun eraseLastInstance() {
-        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?".erase(Pencil(), "chuck")
-        assertEquals("How much wood would a woodchuck chuck if a woodchuck could       wood?", actual)
+        val actual = "How much wood would a woodchuck chuck if a woodchuck could chuck wood?".erase("chuck")
+        assertEquals("How much wood would a woodchuck chuck if a woodchuck could       wood?", actual.paper)
     }
 
     @Test
     fun eraseDurability() {
-        val actual = "Buffalo Bill".erase(Pencil(eraserDurability = 3), "Bill")
-        assertEquals("Buffalo B   ", actual)
+        val actual = Writer("Buffalo Bill", eraserDurability = 3).erase("Bill")
+        assertEquals("Buffalo B   ", actual.paper)
     }
 
     @Test
     fun incrementalEraseDurability() {
-        val pencil = Pencil(eraserDurability = 3)
-        val actual = "Buffalo Bill"
-            .erase(pencil, "Bill")
-            .erase(pencil, "B")
-        assertEquals("Buffalo B   ", actual)
+
+        val actual = Writer("Buffalo Bill", eraserDurability = 3)
+            .erase("Bill")
+            .erase("B")
+        assertEquals("Buffalo B   ", actual.paper)
     }
 
     @Test
     fun editEmptySpace() {
         val actual = "An       a day keeps the doctor away".edit(3, "onion")
-        assertEquals("An onion a day keeps the doctor away", actual)
+        assertEquals("An onion a day keeps the doctor away", actual.paper)
     }
 
     @Test
     fun editConflicts() {
         val actual = "An       a day keeps the doctor away".edit(3, "artichoke")
-        assertEquals("An artich@k@ay keeps the doctor away", actual)
+        assertEquals("An artich@k@ay keeps the doctor away", actual.paper)
     }
 }
