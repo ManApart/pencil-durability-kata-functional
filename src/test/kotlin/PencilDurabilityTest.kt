@@ -106,4 +106,14 @@ class PencilDurabilityTest {
         assertEquals("An onion a day keeps the doct   away", actual.paper)
     }
 
+    @Test
+    fun sharpenPencil() {
+        val actual = Writer("", pointDurability = 5)
+            .write("apple")
+            .sharpen()
+            .write(" ciders")
+
+        assertEquals("apple cider", actual.paper)
+    }
+
 }
