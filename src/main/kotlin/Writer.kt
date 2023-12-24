@@ -1,14 +1,18 @@
 import kotlin.math.min
 
-data class Writer(val paper: String = "", val eraserDurability: Int = 100)
+data class Writer(val paper: String = "", val pointDurability: Int = 100, val eraserDurability: Int = 100)
 
-fun String.write(text: String) = this + text
+fun String.write(text: String) = Writer(this).write(text)
+fun Writer.write(textToWrite: String) : Writer {
+    val amountToWrite = min(textToWrite.length, pointDurability)
+    val text = textToWrite.take(amountToWrite)
+    return copy(paper = paper + text)
+}
 
 fun String.erase(textToErase: String) = Writer(this).erase(textToErase)
 fun Writer.erase(textToErase: String): Writer {
     val durabilityUsed = min(eraserDurability, textToErase.length)
-    val amountWeCantErase = if (textToErase.length < eraserDurability) 0 else textToErase.length - eraserDurability
-    val text = textToErase.drop(amountWeCantErase)
+    val text = textToErase.takeLast(durabilityUsed)
     val start = paper.lastIndexOf(text)
     val replacement = text.indices.joinToString("") { " " }
 

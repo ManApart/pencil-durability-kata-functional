@@ -7,19 +7,25 @@ class PencilDurabilityTest {
     @Test
     fun writeSingleCharacter() {
         val actual = "".write("a")
-        assertEquals("a", actual)
+        assertEquals("a", actual.paper)
     }
 
     @Test
     fun writeWord() {
         val actual = "".write("apple")
-        assertEquals("apple", actual)
+        assertEquals("apple", actual.paper)
+    }
+
+    @Test
+    fun pointDegradation() {
+        val actual = Writer(pointDurability = 3).write("apple")
+        assertEquals("app", actual.paper)
     }
 
     @Test
     fun appendText() {
         val actual = "apple".write(" tree")
-        assertEquals("apple tree", actual)
+        assertEquals("apple tree", actual.paper)
     }
 
     @Test
