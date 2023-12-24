@@ -1,7 +1,9 @@
 
 fun String.write(text: String) = this + text
 
-fun String.erase(text: String): String {
+fun String.erase(textToErase: String, durability: Int = 100): String {
+    val amountWeCantErase = if (textToErase.length < durability) 0 else textToErase.length - durability
+    val text = textToErase.drop(amountWeCantErase)
     val start = lastIndexOf(text)
     val replacement = text.indices.joinToString("") { " " }
     return edit(start, replacement, true)

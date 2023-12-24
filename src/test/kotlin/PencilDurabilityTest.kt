@@ -41,6 +41,12 @@ class PencilDurabilityTest {
     }
 
     @Test
+    fun eraseDurability(){
+        val actual = "Buffalo Bill".erase("Bill", 3)
+        assertEquals("Buffalo B   ", actual)
+    }
+
+    @Test
     fun editEmptySpace(){
         val actual = "An       a day keeps the doctor away".edit(3, "onion")
         assertEquals("An onion a day keeps the doctor away", actual)
