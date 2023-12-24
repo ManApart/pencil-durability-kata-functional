@@ -7,16 +7,7 @@ data class Writer(
 )
 
 fun String.write(text: String) = Writer(this).write(text)
-fun Writer.write(textToWrite: String): Writer {
-    var durabilityLeft = pointDurability
-    val text = textToWrite.mapNotNull { c ->
-        if (durabilityLeft > 0) {
-            if (!c.isWhitespace()) durabilityLeft--
-            c
-        } else null
-    }.joinToString("")
-    return copy(paper = paper + text, pointDurability = durabilityLeft)
-}
+fun Writer.write(textToWrite: String) = edit(paper.length, textToWrite)
 
 fun String.erase(textToErase: String) = Writer(this).erase(textToErase)
 fun Writer.erase(textToErase: String): Writer {
@@ -25,24 +16,33 @@ fun Writer.erase(textToErase: String): Writer {
     val start = paper.lastIndexOf(text)
     val replacement = text.indices.joinToString("") { " " }
 
-    return this
-        .copy(eraserDurability = eraserDurability - durabilityUsed)
-        .edit(start, replacement, true)
+    val newPaper = paper.edit(start, text, replacement)
+    return copy(paper = newPaper, eraserDurability = eraserDurability - durabilityUsed)
 }
 
-fun String.edit(start: Int, text: String, ignoreConflicts: Boolean = false) =
-    Writer(this).edit(start, text, ignoreConflicts)
+fun String.edit(start: Int, text: String) = Writer(this).edit(start, text)
+fun Writer.edit(start: Int, textToWrite: String): Writer {
+    var durabilityLeft = pointDurability
 
-fun Writer.edit(start: Int, textToWrite: String, ignoreConflicts: Boolean = false): Writer {
-    val amountToWrite = min(textToWrite.length, pointDurability)
-    val text = textToWrite.take(amountToWrite)
-    val replacement = if (ignoreConflicts) text else {
-        text.mapIndexed { i, c ->
-            val replacedChar = paper[start + i]
-            if (replacedChar == ' ') c else '@'
-        }.joinToString("")
-    }
+    val text = textToWrite.mapNotNull { c ->
+        if (durabilityLeft > 0) {
+            if (!c.isWhitespace()) durabilityLeft--
+            c
+        } else null
+    }.joinToString("")
 
-    val newPaper = paper.substring(0, start) + replacement + paper.substring(start + text.length)
-    return copy(paper = newPaper)
+    val replacement = text.mapIndexed { i, c ->
+        val replacedChar = paper.getOrNull(start + i) ?: ' '
+        if (replacedChar == ' ') c else '@'
+    }.joinToString("")
+
+    val newPaper = paper.edit(start, text, replacement)
+    return copy(paper = newPaper, pointDurability = durabilityLeft)
 }
+
+private fun String.edit(start: Int, text: String, replacement: String): String {
+    val startText = substring(0, min(start, length))
+    val end = if (length > start + text.length) substring(start + text.length) else ""
+    return startText + replacement + end
+}
+

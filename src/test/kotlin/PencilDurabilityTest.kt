@@ -92,4 +92,12 @@ class PencilDurabilityTest {
         assertEquals("An on    a day keeps the doctor away", actual.paper)
     }
 
+    @Test
+    fun incrementalEditDurability() {
+        val actual = Writer("An       a day keeps the        away", pointDurability = 9)
+            .edit(3, "onion")
+            .edit(25, "doctor")
+        assertEquals("An onion a day keeps the doct   away", actual.paper)
+    }
+
 }
