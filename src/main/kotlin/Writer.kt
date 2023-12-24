@@ -1,11 +1,18 @@
+import kotlin.math.min
+
+data class Pencil(var eraserDurability: Int = 100)
+
 
 fun String.write(text: String) = this + text
 
-fun String.erase(textToErase: String, durability: Int = 100): String {
-    val amountWeCantErase = if (textToErase.length < durability) 0 else textToErase.length - durability
+fun String.erase(pencil: Pencil, textToErase: String): String {
+    val durabilityUsed = min(pencil.eraserDurability, textToErase.length)
+    val amountWeCantErase = if (textToErase.length < pencil.eraserDurability) 0 else textToErase.length - pencil.eraserDurability
     val text = textToErase.drop(amountWeCantErase)
     val start = lastIndexOf(text)
     val replacement = text.indices.joinToString("") { " " }
+
+    pencil.eraserDurability -= durabilityUsed
     return edit(start, replacement, true)
 }
 
