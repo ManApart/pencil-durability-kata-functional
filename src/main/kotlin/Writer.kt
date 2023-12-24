@@ -23,7 +23,7 @@ fun Writer.erase(text: String): Writer {
         } else c
     }.reversed().joinToString("")
 
-    val newPaper = paper.edit(start, text, replacement)
+    val newPaper = paper.replace(start, text, replacement)
     return copy(paper = newPaper, eraserDurability = durabilityLeft)
 }
 
@@ -43,7 +43,7 @@ fun Writer.edit(start: Int, textToWrite: String): Writer {
         if (replacedChar == ' ') c else '@'
     }.joinToString("")
 
-    val newPaper = paper.edit(start, text, replacement)
+    val newPaper = paper.replace(start, text, replacement)
     return copy(paper = newPaper, pointDurability = durabilityLeft)
 }
 
@@ -53,7 +53,7 @@ fun Writer.sharpen(): Writer {
     } else this
 }
 
-private fun String.edit(start: Int, text: String, replacement: String): String {
+private fun String.replace(start: Int, text: String, replacement: String): String {
     val startText = substring(0, min(start, length))
     val end = if (length > start + text.length) substring(start + text.length) else ""
     return startText + replacement + end
