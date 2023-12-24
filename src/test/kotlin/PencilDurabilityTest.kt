@@ -45,4 +45,10 @@ class PencilDurabilityTest {
         val actual = "An       a day keeps the doctor away".edit(3, "onion")
         assertEquals("An onion a day keeps the doctor away", actual)
     }
+
+    @Test
+    fun editConflicts(){
+        val actual = "An       a day keeps the doctor away".edit(3, "artichoke")
+        assertEquals("An artich@k@ay keeps the doctor away", actual)
+    }
 }
